@@ -32,10 +32,22 @@ public class Operacoes {
 				mostrarMensagem(Alert.AlertType.WARNING, "FALTANDO DADOS", "SEM USUARIO OU SENHA");
 	
 			}else {
+				if(senhaUsuario.isEmpty()){
 				mostrarMensagem(Alert.AlertType.WARNING, "FALTANDO DADOS", "SEM USUARIO OU SENHA");
 			}
 			
+			}
 		} // if
+		
+		else {
+			if(nomeUsuario.equals("admin") && senhaUsuario.equals("123456")) {
+				mostrarMensagem(Alert.AlertType.CONFIRMATION, "ACESSO PERMITIDO", "LOGADO COM SUCESSO!");
+				
+			}
+			else {
+				mostrarMensagem(Alert.AlertType.ERROR,"ERRO DE ACESSO", "Usuario ou senha errado");
+			}
+		}
 		
 	} // acessarConta
 	//--------------------------------------------------------
