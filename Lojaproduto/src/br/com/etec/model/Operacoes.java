@@ -1,5 +1,12 @@
 package br.com.etec.model;
 
+
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -26,7 +33,7 @@ public class Operacoes {
 
 
 	@FXML
-	private void acessarConta(ActionEvent event) {
+	private void acessarConta(ActionEvent event) throws SQLException {
 		
 		String nomeUsuario;
 		nomeUsuario = txfUsuario.getText();
@@ -38,17 +45,20 @@ public class Operacoes {
 			
 			if(nomeUsuario.isEmpty()) {
 				mostrarMensagem(Alert.AlertType.WARNING, "FALTANDO DADOS", "SEM USUARIO OU SENHA");
-	
+				txfUsuario.clear();
+				psfUsuario.clear();
 			}else {
 				if(senhaUsuario.isEmpty()){
 				mostrarMensagem(Alert.AlertType.WARNING, "FALTANDO DADOS", "SEM USUARIO OU SENHA");
+				txfUsuario.clear();
+				psfUsuario.clear();
 			}
 			
 			}
 		} // if
 		
 		else {
-			if(nomeUsuario.equals("admin") && senhaUsuario.equals("123456")) {
+			if(verificarUsuarioSenha(nomeUsuario, senhaUsuario)) {
 				mostrarMensagem(Alert.AlertType.CONFIRMATION, "ACESSO PERMITIDO", "LOGADO COM SUCESSO!");
 				
 			}
@@ -74,5 +84,34 @@ public class Operacoes {
 		acpPalco.close();
 	}
 	
+	 private boolean verificarUsuarioSenha(String usuario, String senha) throws SQLException {
+	        Connection conexao = null;
+	        PreparedStatement stmt = null;
+	        ResultSet rs = null;
+	        boolean usuarioValido = false;
+
+	        try {
+	            conexao = ClasseConexao.conectar();
+	            String sql = "SELECT * FROM login_tb WHERE usuario = ? AND senha = ?";
+	            stmt = conexao.prepareStatement(sql);
+	            stmt.setString(1, usuario);
+	            stmt.setString(2, senha);
+	            rs = stmt.executeQuery();
+
+	            if (rs.next()) {
+	                usuarioValido = true;
+	            }
+	        } finally {
+	            if (rs != null) {
+	                rs.close();
+	            }
+	            if (stmt != null) {
+	                stmt.close();
+	            }
+	            ClasseConexao.fechar(conexao);
+	        }
+
+	        return usuarioValido;
+	    }
 }
 
