@@ -2,6 +2,7 @@ package br.com.etec.model;
 
 
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,10 +10,14 @@ import java.sql.SQLException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class Operacoes {
@@ -30,10 +35,11 @@ public class Operacoes {
 	
 	@FXML
 	private Stage acpPalco;
+	
 
 
 	@FXML
-	private void acessarConta(ActionEvent event) throws SQLException {
+	private void acessarConta(ActionEvent event) throws SQLException, IOException {
 		
 		String nomeUsuario;
 		nomeUsuario = txfUsuario.getText();
@@ -60,6 +66,7 @@ public class Operacoes {
 		else {
 			if(verificarUsuarioSenha(nomeUsuario, senhaUsuario)) {
 				mostrarMensagem(Alert.AlertType.CONFIRMATION, "ACESSO PERMITIDO", "LOGADO COM SUCESSO!");
+				acessarTelaPrincipal(event);
 				
 			}
 			else {
@@ -113,5 +120,17 @@ public class Operacoes {
 
 	        return usuarioValido;
 	    }
+	 //-------------------------------------------------------------
+	 
+	 public void acessarTelaPrincipal(ActionEvent event) throws IOException {
+		 	AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/br/com/etec/view/telaPrincipal.fxml"));
+		 
+		 	Stage primaryStage = (Stage)((Node)event.getSource()).getScene().getWindow();		 	
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("/br/com/etec/view/application.css").toExternalForm());
+			primaryStage.setScene(scene);	
+			
+			primaryStage.show();
+	 }
 }
 

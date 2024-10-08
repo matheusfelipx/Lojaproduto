@@ -14,7 +14,8 @@ public class Main extends Application {
 			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/br/com/etec/view/telaLogin.fxml"));
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/br/com/etec/view/application.css").toExternalForm());
-			primaryStage.setScene(scene);			
+			primaryStage.setScene(scene);	
+			
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
